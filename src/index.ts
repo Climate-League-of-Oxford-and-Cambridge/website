@@ -159,14 +159,16 @@ function responsiveUniversity(uni: University): string {
 }
 
 // college name depending on screen size 
-function responsiveCollege(name: string, logo: string): string {
-  if (smallScreen() && mode == "Both") return name
-  else {
-    const icon = document.createElement("img")
-    icon.classList.add('logo')
-    icon.src = `logos/${logo}`
-    return `${icon.outerHTML} ${name}`
+function responsiveCollege(name: string, logo: string, website: string): string {
+  var output = name 
+  if (smallScreen()) {
+    output = `<a href=${website}>${output}</a>`
+    if (mode == "Both") return output
   }
+  const icon = document.createElement("img")
+  icon.classList.add('logo')
+  icon.src = `logos/${logo}`
+  return `${icon.outerHTML} ${output}`
 }
 
 // table headers
@@ -175,14 +177,17 @@ var headers = ['Rank','University','College','Score','Grade','Breakdown']
 // update table headers 
 function resetHeaders() {
   if (mode == "Both") {
-    headers = [smallScreen() ? '#' : 'Rank',
-               smallScreen() ? 'Uni' : 'University',
-               'College','Score','Grade',
-               smallScreen() ? 'Marks' : 'Mark Breakdown']
+    if (smallScreen()) {
+      headers = ['#','Uni','College','Score','Grade']
+    } else {
+      headers = ['Rank','University','College','Score','Grade','Mark Breakdown']
+    }
   } else {
-    headers = [smallScreen() ? '#' : 'Rank',
-               'College','Score','Grade',
-               smallScreen() ? 'Marks' : 'Mark Breakdown']
+    if (smallScreen()) {
+      headers = ['#','College','Score','Grade']
+    } else {
+      headers = ['Rank','College','Score','Grade','Mark Breakdown']
+    }
   }
 }
 
@@ -191,8 +196,8 @@ function createTableRow(college: RankedCollege) {
     const row = document.createElement("tr");
     const logo = document.createElement("img");
     const university = responsiveUniversity(college.university);
-    const collegeName = responsiveCollege(college.name, college.logo);
     const marksPage = "marks/" + college.id + ".html"
+    const collegeName = responsiveCollege(college.name, college.logo, marksPage);
     logo.classList.add("logo");
     logo.src = `logos/${college.logo}`;
     row.innerHTML = `
@@ -201,7 +206,7 @@ function createTableRow(college: RankedCollege) {
       <td>${collegeName}</td>
       <td>${college.score}</td>
       <td>${college.grade}</td>
-      <td><a href="${marksPage}">marks</a></td>
+      ${smallScreen() ? '' : `<td><a href="${marksPage}">marks</a></td>`}
     `;
     return row;
 }
