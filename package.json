@@ -1,0 +1,11 @@
+{
+  "name": "cloc-ranking",
+  "version": "1.0.0",
+  "dependencies": {
+    "chart.js": "^4.1.1"
+  },
+  "devDependencies": {
+    "@types/chart.js": "^2.9.37",
+    "ts-loader": "^9.4.2"
+  }
+}
