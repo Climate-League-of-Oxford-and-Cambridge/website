@@ -16,7 +16,7 @@ webpack --mode=development
 
 To build the project for production use:
 ```
-webpack --mode=development
+webpack --mode=production
 ```
 
 ## Other Info
